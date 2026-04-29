@@ -1,0 +1,1 @@
+savedcmd_/home/potatoenjoyer/pets/os/kernel_modules/hello_module/modules.order := {   echo /home/potatoenjoyer/pets/os/kernel_modules/hello_module/hello.o; :; } > /home/potatoenjoyer/pets/os/kernel_modules/hello_module/modules.order
