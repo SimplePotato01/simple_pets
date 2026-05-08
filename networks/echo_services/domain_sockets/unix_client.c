@@ -31,7 +31,10 @@ int main() {
     	send(sockfd, message, strlen(message), 0);
     	printf("Server: %s\n", message);
     
-    	read(sockfd, buffer, BUFFER_SIZE);
+	if(read(sockfd, buffer, BUFFER_SIZE) == -1) {
+               	perror("bind:\n");
+        	exit(EXIT_FAILURE);
+    	}
     	printf("Recived: %s\n", buffer);
     
     	close(sockfd);

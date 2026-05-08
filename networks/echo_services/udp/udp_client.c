@@ -30,7 +30,10 @@ int main() {
 	printf("Ready for sending message (/q to stop)\n");
 	while (1){
 		printf("Message: ");
-		fgets(message, MESSAGE_SIZE, stdin);
+		if(fgets(message, MESSAGE_SIZE, stdin) == NULL) {
+			perror("fgets:\n");
+			exit(EXIT_FAILURE);
+		}
 		if(strcmp(message, stop_message) == 0) break;
 
     		ssize_t sent = sendto(sockfd, message, strlen(message), 0, (const struct sockaddr *)&server_addr, addr_len);

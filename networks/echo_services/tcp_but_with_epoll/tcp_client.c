@@ -38,7 +38,10 @@ int main() {
     	printf("Connected to the server (/q for quit)\n");
    	while(1) {
 		printf("Message:");
-		fgets(message, MESSAGE_SIZE, stdin);
+		if(fgets(message, MESSAGE_SIZE, stdin) == NULL) {
+			perror("fgets:\n");
+			exit(EXIT_FAILURE);
+		}
 		if(strcmp(message, stop_message) == 0) break;
 		// Отправка данных
     		ssize_t bytes_sent = send(sock, message, strlen(message), 0);

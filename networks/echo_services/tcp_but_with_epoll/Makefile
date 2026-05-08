@@ -3,21 +3,20 @@ CFLAGS = -Wall -Wextra -Werror -O2
 
 all: clean server client
 clean:
-	rm -f tcp_client tcp_server
+	rm -f  epoll_server tcp_client
 
-
-server: tcp_server.c
-	$(CC) $(CFLAGS) -o tcp_server tcp_server.c
+server: epoll_server.c
+	$(CC) $(CFLAGS) -o epoll_server epoll_server.c
 client: tcp_client.c
 	$(CC) $(CFLAGS) -o tcp_client tcp_client.c
 
 run-server:
-	./tcp_server
+	./epoll_server
 run-client:
 	./tcp_client
 
 valgrind-server: server
-	valgrind --leak-check=full ./tcp_server
+	valgrind --leak-check=full ./epoll_server
 
 valgrind-client: client
 	valgrind --leak-check=full ./tcp_client

@@ -43,7 +43,10 @@ int main() {
             		continue;
         	}
         
-        	read(client_fd, buffer, BUFFER_SIZE);
+        	if(read(client_fd, buffer, BUFFER_SIZE) == -1) {
+			perror("bind:\n");
+			exit(EXIT_FAILURE);
+		}
         	printf("Recived: %s\n", buffer);
         	send(client_fd, buffer, strlen(buffer), 0);
         	close(client_fd);
