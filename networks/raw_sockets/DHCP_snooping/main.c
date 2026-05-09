@@ -185,7 +185,7 @@ void process_dhcp_packet_eth(uint8_t *packet, int len, const char *iface, int tr
     	mac_to_str(dhcp->chaddr, mac_str);
     
     	struct in_addr addr;
-    	char ip_str[16];
+    	// char ip_str[16];
     
     	// Logs
     	printf("\n[%s] %s port | DHCP ", iface, trusted_port ? "TRUSTED" : "UNTRUSTED");
