@@ -1,4 +1,4 @@
-# It`s a tipical wardrivin.  
+# It`s a typical wardrivin.  
 ## Build
 ```bash
 make
