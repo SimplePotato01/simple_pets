@@ -6,9 +6,9 @@ clean:
 	rm -f udp_server udp_client
 
 server: udp_server.c
-	$(CC) $(CFLAGS) -o udp_server udp_server.c
+	$(CC) $(CFLAGS) -o udp_server -g udp_server.c
 client: udp_client.c
-	$(CC) $(CFLAGS) -o udp_client udp_client.c
+	$(CC) $(CFLAGS) -o udp_client -g udp_client.c
 
 run-server:
 	./udp_server

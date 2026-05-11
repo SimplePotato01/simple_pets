@@ -7,7 +7,7 @@ clean:
 
 
 compile: main.c 
-	$(CC) $(CFLAGS) -o main main.c
+	$(CC) $(CFLAGS) -o main -g main.c
 
 run:
 	sudo ./main

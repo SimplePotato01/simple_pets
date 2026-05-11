@@ -7,9 +7,9 @@ clean:
 
 
 server: tcp_server.c
-	$(CC) $(CFLAGS) -o tcp_server tcp_server.c
+	$(CC) $(CFLAGS) -o tcp_server -g tcp_server.c
 client: tcp_client.c
-	$(CC) $(CFLAGS) -o tcp_client tcp_client.c
+	$(CC) $(CFLAGS) -o tcp_client -g tcp_client.c
 
 run-server:
 	./tcp_server

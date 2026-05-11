@@ -19,6 +19,8 @@
 #define MAX_PEERS 64
 
 // FIXME make more stable shutting down 
+// cause i forgot to use O_NONBLOCK and so recv is blocking the thread even in ctrl+c
+//
 
 typedef struct {
 	char ip[INET6_ADDRSTRLEN];
@@ -238,7 +240,8 @@ void signal_handler(int sig) {
         	printf("\n\nSignal received, shutting down...\n");
         	running = 0;
         	if (sock != -1) {
-            		close(sock);
+            		shutdown(sock, SHUT_RDWR);
+			close(sock);
             		sock = -1;
         	}
     	}

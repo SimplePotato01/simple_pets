@@ -1,4 +1,4 @@
-// server.c (исправленная версия)
+// server.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

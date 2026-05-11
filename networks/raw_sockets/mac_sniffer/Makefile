@@ -7,7 +7,7 @@ clean:
 
 
 compile: mac_sniffer.c
-	$(CC) $(CFLAGS) -o mac_sniffer mac_sniffer.c
+	$(CC) $(CFLAGS) -o mac_sniffer -g mac_sniffer.c
 
 run:
 	sudo ./mac_sniffer wlp2s0

@@ -6,9 +6,9 @@ clean:
 	rm -f  unix_server unix_client
 
 server: unix_server.c
-	$(CC) $(CFLAGS) -o unix_server unix_server.c 
+	$(CC) $(CFLAGS) -o unix_server -g unix_server.c 
 client: unix_client.c
-	$(CC) $(CFLAGS) -o unix_client unix_client.c
+	$(CC) $(CFLAGS) -o unix_client -g unix_client.c
 
 run-server:
 	./unix_server
