@@ -4,6 +4,6 @@
 int main(void){
 	printf("%d\n",getpid());
 	printf("printf of test_code_text\n");
-	sleep(60);
+	sleep(10);
 	return 0;
 }
