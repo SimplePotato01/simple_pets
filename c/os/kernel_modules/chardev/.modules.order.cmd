@@ -1,0 +1,1 @@
+savedcmd_/home/potatoenjoyer/pets/os/kernel_modules/chardev/modules.order := {   echo /home/potatoenjoyer/pets/os/kernel_modules/chardev/chardev.o; :; } > /home/potatoenjoyer/pets/os/kernel_modules/chardev/modules.order
