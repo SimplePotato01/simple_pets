@@ -1,1 +1,0 @@
-savedcmd_/home/potatoenjoyer/pets/os/kernel_modules/chardev/Module.symvers :=  scripts/mod/modpost -M -m -a      -o /home/potatoenjoyer/pets/os/kernel_modules/chardev/Module.symvers -T /home/potatoenjoyer/pets/os/kernel_modules/chardev/modules.order -i Module.symvers -e 

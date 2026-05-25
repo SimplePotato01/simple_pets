@@ -1,1 +1,0 @@
-savedcmd_/home/potatoenjoyer/pets/os/kernel_modules/hello_module/Module.symvers :=  scripts/mod/modpost -M -m -a      -o /home/potatoenjoyer/pets/os/kernel_modules/hello_module/Module.symvers -T /home/potatoenjoyer/pets/os/kernel_modules/hello_module/modules.order -i Module.symvers -e 
