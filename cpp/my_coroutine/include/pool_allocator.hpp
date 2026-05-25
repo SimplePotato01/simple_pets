@@ -8,7 +8,7 @@
 
 class StaticStackPool {
 public:
-    static constexpr std::size_t STACK_SIZE = 64 * 1024; // 64 KiB
+    static constexpr std::size_t STACK_SIZE = 64 * 1024;
     static constexpr std::size_t MAX_COROUTINES = 16;
 
     using Stack = std::array<std::byte, STACK_SIZE>;
@@ -42,4 +42,4 @@ private:
     static inline std::bitset<MAX_COROUTINES> used_;
 };
 
-#endif // POOL_ALLOCATOR_HPP
+#endif

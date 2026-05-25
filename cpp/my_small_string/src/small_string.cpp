@@ -41,6 +41,7 @@ SmallString::SmallString(SmallString&& other) noexcept
         other.data_ = other.sso_buffer_;
         other.sso_buffer_[0] = '\0';
         other.size_ = 0;
+        other.capacity_ = SSO_CAPACITY;
     } else {
         other.data_ = other.sso_buffer_;
         other.is_sso_ = true;
@@ -81,6 +82,7 @@ SmallString& SmallString::operator=(SmallString&& other) noexcept {
             other.data_ = other.sso_buffer_;
             other.sso_buffer_[0] = '\0';
             other.size_ = 0;
+            other.capacity_ = SSO_CAPACITY;
         } else {
             other.data_ = other.sso_buffer_;
             other.is_sso_ = true;
@@ -93,8 +95,13 @@ SmallString& SmallString::operator=(SmallString&& other) noexcept {
 }
 
 void SmallString::push_back(char c) {
-    if (size_ == capacity_) {
-        grow(capacity_ == 0 ? 1 : capacity_ * 2);
+    if (size_ >= capacity_) {
+        // Calculate new capacity: double or at least size_ + 1
+        size_t new_capacity = std::max(size_ * 2, size_ + 1);
+        if (new_capacity < SSO_CAPACITY) {
+            new_capacity = SSO_CAPACITY;
+        }
+        grow(new_capacity);
     }
     data_[size_++] = c;
     data_[size_] = '\0';
@@ -103,7 +110,11 @@ void SmallString::push_back(char c) {
 void SmallString::append(const char* str) {
     size_t len = std::strlen(str);
     if (size_ + len > capacity_) {
-        grow(size_ + len);
+        size_t new_capacity = std::max(capacity_ * 2, size_ + len);
+        if (new_capacity < SSO_CAPACITY) {
+            new_capacity = SSO_CAPACITY;
+        }
+        grow(new_capacity);
     }
     std::memcpy(data_ + size_, str, len + 1);
     size_ += len;
@@ -142,27 +153,33 @@ bool SmallString::operator<(const SmallString& other) const {
 
 // private helpers
 void SmallString::grow(size_t new_cap) {
+    // Ensure at least SSO_CAPACITY + 1 to force large allocation if needed
     if (new_cap <= SSO_CAPACITY) {
-        // switch to SSO if we were large
+        // We're staying in SSO mode
         if (!is_sso_) {
+            // Currently large, moving back to SSO (can happen on shrink)
             char tmp[SSO_CAPACITY + 1];
             std::memcpy(tmp, data_, size_);
             tmp[size_] = '\0';
             free_memory();
             set_sso(tmp, size_);
-        } else {
-            // already SSO, but new_cap <= SSO_CAPACITY -> just update capacity?
-            // Actually if we are SSO, capacity_ == SSO_CAPACITY, so nothing to do.
         }
-    } else {
-        // need large allocation
-        size_t alloc_cap = new_cap;
-        char* new_data = static_cast<char*>(PoolAllocator::instance().allocate(alloc_cap + 1));
-        std::memcpy(new_data, data_, size_);
-        new_data[size_] = '\0';
-        free_memory();
-        set_large(new_data, size_, alloc_cap);
+        // else: already SSO, capacity_ is already SSO_CAPACITY
+        return;
     }
+    
+    // Need large allocation
+    size_t alloc_cap = new_cap;
+    char* new_data = static_cast<char*>(PoolAllocator::instance().allocate(alloc_cap + 1));
+    
+    std::memcpy(new_data, data_, size_);
+    new_data[size_] = '\0';
+    
+    free_memory();
+    
+    is_sso_ = false;
+    data_ = new_data;
+    capacity_ = alloc_cap;
 }
 
 void SmallString::copy_from(const char* src, size_t len) {
@@ -178,10 +195,9 @@ void SmallString::copy_from(const char* src, size_t len) {
 void SmallString::free_memory() {
     if (!is_sso_ && data_) {
         PoolAllocator::instance().deallocate(data_, capacity_ + 1);
+        data_ = nullptr;
     }
-    data_ = nullptr;
-    size_ = 0;
-    capacity_ = 0;
+    // Don't reset sso_buffer_ - it's part of the object
 }
 
 void SmallString::set_sso(const char* str, size_t len) {

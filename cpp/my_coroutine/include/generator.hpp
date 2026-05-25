@@ -33,11 +33,9 @@ public:
         }
     }
 
-    // Запрещаем копирование
     Generator(const Generator&) = delete;
     Generator& operator=(const Generator&) = delete;
     
-    // Разрешаем перемещение
     Generator(Generator&& other) noexcept
         : ctx_caller_(other.ctx_caller_)
         , ctx_coro_(other.ctx_coro_)
@@ -99,9 +97,9 @@ private:
             StaticStackPool::deallocate(gen->stack_);
             gen->stack_ = nullptr;
         }
-        // Возвращаем управление, чтобы next() получил nullopt
+        // Returning control so that next() receives a nullopt
         swapcontext(&gen->ctx_coro_, &gen->ctx_caller_);
     }
 };
 
-#endif // GENERATOR_HPP
+#endif

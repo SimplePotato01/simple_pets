@@ -5,7 +5,6 @@
 
 constexpr long long N = 10'000'000;
 
-// Обычная функция – просто суммируем числа
 long long sum_range_naive() {
     long long sum = 0;
     for (long long i = 0; i < N; ++i) {
@@ -14,7 +13,6 @@ long long sum_range_naive() {
     return sum;
 }
 
-// Генератор, который yield'ит каждое число
 long long sum_range_generator() {
     long long sum = 0;
     Generator<long long> gen([](Generator<long long>& self) {
@@ -31,7 +29,7 @@ long long sum_range_generator() {
 template<typename Func>
 double measure(Func f) {
     auto start = std::chrono::high_resolution_clock::now();
-    volatile auto result = f(); // предотвращаем оптимизацию
+    volatile auto result = f();
     (void)result;
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;

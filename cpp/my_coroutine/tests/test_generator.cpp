@@ -1,48 +1,49 @@
-#include <iostream>
 #include "generator.hpp"
+#include <cassert>
+#include <iostream>
 
-int main() {
-    std::cout << "=== Generator Demo ===" << std::endl;
-    
-    // Простой генератор от 0 до 4
+void test_sequence() {
+    std::cout << "Testing: sequence..." << std::endl;
     Generator<int> gen([](Generator<int>& self) {
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 1; i <= 3; ++i) {
             self.yield(i);
         }
     });
+    
+    assert(gen.next() == 1);
+    assert(gen.next() == 2);
+    assert(gen.next() == 3);
+    assert(gen.next() == std::nullopt);
+    std::cout << "  OK" << std::endl;
+}
 
-    std::cout << "Simple sequence (0-4): ";
-    while (auto val = gen.next()) {
-        std::cout << *val << " ";
-    }
-    std::cout << std::endl;
-
-    // Генератор чисел Фибоначчи
-    std::cout << "\n=== Fibonacci (first 10) ===" << std::endl;
-    Generator<int> fib([](Generator<int>& self) {
-        int a = 0, b = 1;
-        for (int i = 0; i < 10; ++i) {
-            self.yield(a);
-            int next = a + b;
-            a = b;
-            b = next;
-        }
-    });
-
-    int count = 0;
-    while (auto val = fib.next()) {
-        std::cout << "F" << count++ << " = " << *val << std::endl;
-    }
-
-    // Демонстрация работы пула
-    std::cout << "\n=== Pool usage demonstration ===" << std::endl;
-    for (int i = 0; i < 5; ++i) {
-        Generator<int> temp([](Generator<int>& self) {
+void test_pool_reuse() {
+    std::cout << "Testing: pool reuse..." << std::endl;
+    for (int i = 0; i < 20; ++i) {
+        Generator<int> gen([](Generator<int>& self) {
             self.yield(42);
         });
-        auto val = temp.next();
-        std::cout << "Generator " << i << " produced: " << *val << std::endl;
+        assert(gen.next() == 42);
+        assert(gen.next() == std::nullopt);
     }
+    std::cout << "  OK" << std::endl;
+}
 
+void test_early_exit() {
+    std::cout << "Testing: early exit..." << std::endl;
+    Generator<int> gen([](Generator<int>& self) {
+        self.yield(1);
+    });
+    assert(gen.next() == 1);
+    assert(gen.next() == std::nullopt);
+    std::cout << "  OK" << std::endl;
+}
+
+int main() {
+    std::cout << "Running tests..." << std::endl;
+    test_sequence();
+    test_pool_reuse();
+    test_early_exit();
+    std::cout << "\nAll tests passed!" << std::endl;
     return 0;
 }

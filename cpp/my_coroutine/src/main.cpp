@@ -4,7 +4,6 @@
 int main() {
     std::cout << "=== Generator Demo ===" << std::endl;
     
-    // Простой генератор от 0 до 4
     Generator<int> gen([](Generator<int>& self) {
         for (int i = 0; i < 5; ++i) {
             self.yield(i);
@@ -17,8 +16,6 @@ int main() {
     }
     std::cout << std::endl;
 
-    // Генератор чисел Фибоначчи
-    std::cout << "\n=== Fibonacci (first 10) ===" << std::endl;
     Generator<int> fib([](Generator<int>& self) {
         int a = 0, b = 1;
         for (int i = 0; i < 10; ++i) {
@@ -29,20 +26,11 @@ int main() {
         }
     });
 
-    int count = 0;
+    std::cout << "\nFibonacci (first 10): ";
     while (auto val = fib.next()) {
-        std::cout << "F" << count++ << " = " << *val << std::endl;
+        std::cout << *val << " ";
     }
-
-    // Демонстрация работы пула
-    std::cout << "\n=== Pool usage demonstration ===" << std::endl;
-    for (int i = 0; i < 5; ++i) {
-        Generator<int> temp([](Generator<int>& self) {
-            self.yield(42);
-        });
-        auto val = temp.next();
-        std::cout << "Generator " << i << " produced: " << *val << std::endl;
-    }
+    std::cout << std::endl;
 
     return 0;
 }
