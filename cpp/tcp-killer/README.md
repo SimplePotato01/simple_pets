@@ -9,4 +9,5 @@ Bash wrapper with convenient options
 Docker support  
 ## Build
 ```bash
-make
+make  
+make help

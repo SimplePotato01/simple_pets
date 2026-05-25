@@ -1,1 +1,0 @@
-savedcmd_/home/potatoenjoyer/pets/os/kernel_modules/hello_module/hello.ko := ld -r -m elf_x86_64 -z noexecstack --no-warn-rwx-segments --build-id=sha1  -T scripts/module.lds -o /home/potatoenjoyer/pets/os/kernel_modules/hello_module/hello.ko /home/potatoenjoyer/pets/os/kernel_modules/hello_module/hello.o /home/potatoenjoyer/pets/os/kernel_modules/hello_module/hello.mod.o
