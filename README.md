@@ -1,5 +1,5 @@
-# list:
-## Networks:
+# C:
+## networks:
 ### echo_services:
 1) domain_sockets
 2) tcp
@@ -21,7 +21,7 @@
 15) mac_sniffer
 16) raw_sniffer
 17) wifi_sniffer
-## Os:
+## os:
 18) my_malloc
 19) my_strace
 20) my_syscall
@@ -29,3 +29,13 @@
 ### kernel_modules:
 22) chardev
 23) hello_module
+# CPP:
+## networks:
+24) tcp-killer
+## patterns:
+25) builder
+26) decorator
+27) factory
+28) observer
+29) singleton
+30) strategy
